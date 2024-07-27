@@ -60,7 +60,9 @@ node_modules/
 jspm_packages/
 
 # Client IGNORE
-client/node_modules/
+client/
+controllers/
+.vscode/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 

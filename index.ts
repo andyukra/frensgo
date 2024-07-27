@@ -41,7 +41,7 @@ let rooms = new Map([
 //SERVER CHAT
 const app = new Elysia()
     .use(staticPlugin({
-        assets: `${__dirname}/client/build`,
+        assets: `${__dirname}/build`,
         prefix: '/'
     }))
     .ws('/ws/:room/:nick',{
