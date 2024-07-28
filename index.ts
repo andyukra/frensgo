@@ -41,7 +41,7 @@ let rooms = new Map([
 //SERVER CHAT
 const app = new Elysia({
     websocket: {
-        idleTimeout: 1200
+        idleTimeout: 960
     }
 })
     .use(staticPlugin({
