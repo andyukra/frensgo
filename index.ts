@@ -91,7 +91,9 @@ const app = new Elysia({
             const { type, msg } = message;
             switcher(type, ws, ws.data.params.room, app.server, msg);
         },
-        close(ws) {
+        close(ws, code, reason) {
+            console.log('codigo: ',code);
+            console.log('razon: ', reason);
             const { data: { params: {nick, room} } } = ws;
             if( !nick || !room ) return;
             app.server!.publish(room, JSON.stringify({
