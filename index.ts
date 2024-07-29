@@ -44,10 +44,10 @@ const app = new Elysia({
         idleTimeout: 960,
     }
 })
-    .use(staticPlugin({
-        assets: `${__dirname}/build`,
-        prefix: '/'
-    }))
+    // .use(staticPlugin({
+    //     assets: `${__dirname}/build`,
+    //     prefix: '/'
+    // }))
     .ws('/ws/:room/:nick',{
         open(ws) {       
             let { data: { params: {nick, room} } } = ws;
@@ -91,9 +91,7 @@ const app = new Elysia({
             const { type, msg } = message;
             switcher(type, ws, ws.data.params.room, app.server, msg);
         },
-        close(ws, code, reason) {
-            console.log('codigo: ',code);
-            console.log('razon: ', reason);
+        close(ws) {
             const { data: { params: {nick, room} } } = ws;
             if( !nick || !room ) return;
             app.server!.publish(room, JSON.stringify({
