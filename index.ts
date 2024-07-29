@@ -44,10 +44,10 @@ const app = new Elysia({
         idleTimeout: 960,
     }
 })
-    // .use(staticPlugin({
-    //     assets: `${__dirname}/build`,
-    //     prefix: '/'
-    // }))
+    .use(staticPlugin({
+        assets: `${__dirname}/build`,
+        prefix: '/'
+    }))
     .ws('/ws/:room/:nick',{
         open(ws) {       
             let { data: { params: {nick, room} } } = ws;
