@@ -2,7 +2,7 @@ import { Role } from "./types/core";
 import type { User, WsData } from "./types/core";
 
 //ORIGIN HOST
-const host = 'http://localhost:3000';
+const host = 'https://frensgo.lat';
 
 //LIST OF USERNAMES
 let usernames = new Map<string, string>();
