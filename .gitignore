@@ -62,7 +62,7 @@ jspm_packages/
 # Client IGNORE
 client/
 controllers/
-.vscode/
+.vscode
 
 # Snowpack dependency directory (https://snowpack.dev/)
 
