@@ -27,11 +27,11 @@
         {/if}
         <h4 class="montserrat-alternates-bold">{decodeURI(data.username)} </h4>
     </div>
-    <div class={`body ${data.type === Type.BOT ? 'typeBot' : ''}`}>
+    <div class={`body ${data.type === Type.BOT ? 'typeBot' : data.type === Type.AUDIO ? 'typeAudio' : ''}`}>
         {#if data.type === Type.ROOM || data.type === Type.BOT}
             <p class="montserrat-alternates-regular">{data.body}</p>
         {:else if  data.type === Type.AUDIO}
-            <audio src={data.body} controls></audio>
+            <audio src={data.body} controls ></audio>
         {:else if data.type === Type.IMAGE}
             <img class="typeImg" src={data.body} alt="Imagen subida Por un usuario"/>
         {/if}
@@ -39,6 +39,11 @@
 </article>
 
 <style lang="sass">
+
+    .typeAudio
+        padding: 0 !important
+        background: transparent !important
+        box-shadow: none !important
 
     .typeImg
         max-width: 300px
