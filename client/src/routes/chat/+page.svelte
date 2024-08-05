@@ -8,6 +8,8 @@
     //@ts-ignore
     import Dialog from 'comp/Dialog.svelte';
     //@ts-ignore
+    import Tools from 'comp/Tools.svelte';
+    //@ts-ignore
     import { socket, myUser, userlist, dialog } from '$lib/store';
     import { onMount, onDestroy } from 'svelte';
     //@ts-ignore
@@ -21,7 +23,7 @@
     type Msg = {
         username:string,
         body:string,
-        type:Type|undefined
+        type:Type
     }
 
 
@@ -34,6 +36,16 @@
 
     //HELPERS
     function scrollToBottom(node:any) {node.scroll({ top: node.scrollHeight, behavior: 'smooth' });}
+
+    //CALLBACKS RETURNER PROPS FROM CHILDS
+    function cbAudio(data:Msg):void {
+        chatBX.push(data);
+        chatBX = chatBX;
+    }
+    function cbImage(data:Msg):void {
+        chatBX.push(data);
+        chatBX = chatBX;
+    }
 
     //GET LIST ON RENDER THIS PAGE
     onMount(() => {
@@ -85,7 +97,7 @@
                 chatBX = chatBX;
                 break;
             case 'ROOM_MSG':
-                chatBX.push(msg);
+                chatBX.push({...msg, type:Type.ROOM });
                 chatBX = chatBX;
                 if(chatBX.length >= 30) {
                     chatBX.shift();
@@ -133,13 +145,7 @@
             {/each}
         </div>
         <div class="msg">
-            <div class="tools">
-                <div class="txtStyle">
-                    <button class="montserrat-alternates-regular activeStyle">T</button>
-                    <button class="montserrat-alternates-medium">T</button>
-                    <button class="montserrat-alternates-bold">T</button>
-                </div>
-            </div>
+            <Tools cbAudio={cbAudio} cbImage={cbImage}/>
             <form on:submit|preventDefault={roomMsg}>
                 <input class="montserrat-alternates-regular" type="text" placeholder="Escribe tu mensaje..." maxlength="120" minlength="1" bind:value={message}>
                 <button>
@@ -159,10 +165,6 @@
 </section>
 
 <style lang="sass">
-
-    .activeStyle
-        color: var(--crash) !important
-
     .showUserlist
         position: fixed
         z-index: 2
@@ -203,24 +205,6 @@
                 display: flex
                 flex-direction: column
                 box-shadow: 0 4px 4px #0003
-                .tools
-                    padding: 0.5rem 1rem
-                    background: var(--bgD)
-                    border-radius: 20px 20px 0 0
-                    @media(max-width: 500px)
-                        padding: 0.3rem 1rem
-                    .txtStyle
-                        display: flex
-                        gap: 1rem
-                        button
-                            font-size: 1.5rem
-                            padding: 0
-                            border: none
-                            background: transparent
-                            color: white
-                            cursor: pointer
-                            @media(max-width: 500px)
-                                font-size: 1rem
                 form
                     width: 100%
                     display: flex

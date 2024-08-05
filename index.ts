@@ -1,14 +1,18 @@
+import { mkdir, exists } from 'fs/promises';
 import { Role } from "./types/core";
 import type { User, WsData } from "./types/core";
 
 //ORIGIN HOST
-const host = 'https://frensgo.lat';
+const host:string = 'https://frensgo.lat';
+const dev:string = 'http://localhost:3000';
 
 //LIST OF USERNAMES
-let usernames = new Map<string, string>();
+let usernames:Map<string, string> = new Map<string, string>();
 
 //STATIC FOLDER
 const staticFolder = "./build";
+const audioFldr = `${__dirname}/build/audios`;
+const imgsFldr = `${__dirname}/build/imgs`;
 
 //WS MAIN SWITCHER
 function switcher(
@@ -79,9 +83,16 @@ function antispam(): (ws: any) => void {
 
 //SERVER CHAT
 const server = Bun.serve<WsData>({
+  development: true,
   port: 3000,
   async fetch(req, server) {
       const origin = req.headers.get('origin');
+      //ARTESANAL CORS
+      const cors:ResponseInit = {
+        headers: {
+          'Access-Control-Allow-Origin': host
+        }
+      }
       if(origin && origin !== host) return new Response(null, { status: 500 });
       const ip = server.requestIP(req)?.address;
       if (bloqueds.has(ip)) return new Response("Upgrade failed", { status: 500 });
@@ -105,10 +116,36 @@ const server = Bun.serve<WsData>({
         console.log(origin)
         const file = Bun.file(staticFolder + '/index.html')
         return new Response(file);
+    } else if(url.pathname === '/audio' && req.method === 'POST') {
+      const fd:FormData = await req.formData();
+      const file = fd.get('audio');
+      //@ts-ignore
+      if(file.size >= 4000000) {
+        return new Response('FILE TOO LARGE', {...cors, status:409});
+      }
+      if(await !exists(audioFldr)) mkdir(audioFldr);
+      const audioName = `${Date.now()}.ogg`;
+      await Bun.write(`${audioFldr}/${audioName}`, file!);
+      return new Response(`${host}/audios/${audioName}`, cors);
+    } else if(url.pathname === '/upImg' && req.method === 'POST') {
+      const fd:FormData = await req.formData();
+      const file = fd.get('image');
+      //@ts-ignore
+      if(file.size > 5000000 || !/^image\/....?$/.test(file.type)) {
+        new Response('BAD FILE', { status: 500 });
+      }
+      //CREATE IMGS FOLDER
+      if(await !exists(imgsFldr)) mkdir(imgsFldr);
+      //GET IMAGE EXTENSION
+      //@ts-ignore
+      const ext = file.type.match(/\/....?$/)[0].replace('/', '');
+      const imgName = `${Date.now()}.${ext}`;
+      await Bun.write(`${imgsFldr}/${imgName}`, file!);
+      return new Response(`${host}/imgs/${imgName}`, cors);
     } else {
-        const filepath = staticFolder + url.pathname;
-        const file = Bun.file(filepath);
-        return new Response(file);
+      const filepath = staticFolder + url.pathname;
+      const file = Bun.file(filepath);
+      return new Response(file);
     }
   },
   websocket: {

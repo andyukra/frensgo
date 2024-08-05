@@ -7,6 +7,9 @@
     const enum Type {
         ROOM = 'room',
         BOT = 'bot',
+        AUDIO = 'audio',
+        IMAGE = 'image',
+        YT = 'yt'
     }
     type data = {
         body:string,
@@ -25,11 +28,23 @@
         <h4 class="montserrat-alternates-bold">{decodeURI(data.username)} </h4>
     </div>
     <div class={`body ${data.type === Type.BOT ? 'typeBot' : ''}`}>
-        <p class="montserrat-alternates-regular">{data.body}</p>
+        {#if data.type === Type.ROOM || data.type === Type.BOT}
+            <p class="montserrat-alternates-regular">{data.body}</p>
+        {:else if  data.type === Type.AUDIO}
+            <audio src={data.body} controls></audio>
+        {:else if data.type === Type.IMAGE}
+            <img class="typeImg" src={data.body} alt="Imagen subida Por un usuario"/>
+        {/if}
     </div>
 </article>
 
 <style lang="sass">
+
+    .typeImg
+        max-width: 300px
+        cursor: pointer
+        @media(max-width: 500px)
+            max-width: 65vw
 
     .typeBot
         background: transparent !important

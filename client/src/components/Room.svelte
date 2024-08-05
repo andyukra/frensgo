@@ -4,6 +4,8 @@
     export let connectedUsers: number;
     export let value:string;
 
+    const host = 'wss://frensgo.lat';
+
     // @ts-ignore
     import { myUser, socket } from '$lib/store';
      // @ts-ignore
@@ -12,7 +14,7 @@
     function goChat(room:string):void {
         if(!$myUser) return;
         $myUser = {...$myUser, room:room};
-        $socket = new WebSocket(`wss://frensgo.lat/chat?room=${$myUser.room}&nick=${$myUser.username}`);
+        $socket = new WebSocket(`${host}/chat?room=${$myUser.room}&nick=${$myUser.username}`);
         $socket.onmessage = (e:any) => {
             const { type } = JSON.parse(e.data);
             if(type && type === 'CONNECTED') {
