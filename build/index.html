@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Kenia&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Kenia&family=Montserrat+Alternates:wght@400;500;700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		
+		<link href="./_app/immutable/assets/2.riEtsV1m.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.BYEInnEM.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/entry.DbnB_DfK.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/scheduler.CHVDA16w.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.C_ebyiui.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.DIjhlOJV.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.CnccP5cE.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.D9mkfOLn.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.Bgk_tAtE.js">
+		<style>
+			:root {
+				--bgL: #f3f1ff;
+				--bgD: #1f0075;
+				--bgMsgL: #d4cfff;
+				--bgMsgD: #3e05c2;
+				--txtPL: #1f0075;
+				--txtSL: #5f19ff;
+				--txtPD: #f3f1ff;
+				--txtSD: #9176ff;
+				--detailsL: #5f19ff;
+				--detailsD: #9176ff;
+				--crash: #FF8719;
+			}
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			::-webkit-scrollbar {
+				width: 10px;
+			}
+			::-webkit-scrollbar-track {
+				width: 10px;
+				background: transparent;
+			}
+			::-webkit-scrollbar-thumb {
+				border-radius: 9999px;
+				background: var(--bgD);
+			}
+			audio::-webkit-media-controls-mute-button {
+    			display: none !important;
+			}
+			audio {
+				width: 250px;
+			}
+			.kenia-regular {
+  				font-family: "Kenia", sans-serif;
+  				font-weight: 400;
+  				font-style: normal;
+			}
+			.montserrat-alternates-regular {
+				font-family: "Montserrat Alternates", sans-serif;
+				font-weight: 400;
+				font-style: normal;
+			}
+
+			.montserrat-alternates-medium {
+				font-family: "Montserrat Alternates", sans-serif;
+				font-weight: 500;
+				font-style: normal;
+			}
+
+			.montserrat-alternates-bold {
+				font-family: "Montserrat Alternates", sans-serif;
+				font-weight: 700;
+				font-style: normal;
+			}
+			html {
+				height: 100dvh;
+				overflow-x: hidden;
+			}
+			body {
+				height: 100dvh;
+			}
+		</style>
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">  <div class="container svelte-7xb03e"><div class="header svelte-7xb03e" data-svelte-h="svelte-13q5o3c"><h1 class="kenia-regular svelte-7xb03e">frens go</h1> <p class="montserrat-alternates-regular svelte-7xb03e">un chat para todxs</p></div> <form class="svelte-7xb03e"><input class="montserrat-alternates-bold svelte-7xb03e" type="text" placeholder="Escribe tu nick..." maxlength="25" minlength="3" required pattern="^(\w|\s|ñ)+$" value=""> <button class="montserrat-alternates-medium svelte-7xb03e" data-svelte-h="svelte-1njdab6">chatear</button> <div class="check svelte-7xb03e"><input type="checkbox" id="check"> <p class="montserrat-alternates-medium svelte-7xb03e" data-svelte-h="svelte-14hrrau">Soy mayor de edad</p></div></form> </div> 
+			
+			<script>
+				{
+					__sveltekit_pe7kp = {
+						base: new URL(".", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.BYEInnEM.js"),
+						import("./_app/immutable/entry/app.C_ebyiui.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
