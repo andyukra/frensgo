@@ -195,7 +195,7 @@
                 overflow-y: auto
                 overflow-x: hidden
                 padding: 1rem
-                border-radius: 20px
+                border-radius: 8px
                 box-shadow: 0 4px 4px #0003
                 display: flex
                 flex-direction: column
@@ -203,7 +203,7 @@
             .msg
                 background: var(--bgMsgL)
                 height: 15dvh
-                border-radius: 20px
+                border-radius: 8px
                 display: flex
                 flex-direction: column
                 box-shadow: 0 4px 4px #0003
@@ -242,7 +242,7 @@
             flex-direction: column
             background: var(--bgMsgL)
             flex: 1
-            border-radius: 20px
+            border-radius: 8px
             box-shadow: 0 4px 4px #0003
             transition: 0.3s cubic-bezier(.87, -1.38, .03, 1.54)
             @media(max-width: 1200px)
@@ -260,7 +260,7 @@
                 padding: 1rem
                 background: var(--bgD)
                 color: white
-                border-radius: 20px 20px 0 0
+                border-radius: 8px 8px 0 0
             .userlist
                 height: 100%
                 overflow: auto
