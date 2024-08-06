@@ -4,7 +4,7 @@ import type { User, WsData } from "./types/core";
 
 //ORIGIN HOST
 const host:string = 'https://frensgo.lat';
-const dev:string = 'http://localhost:3000';
+// const dev:string = 'http://localhost:3000';
 
 //LIST OF USERNAMES
 let usernames:Map<string, string> = new Map<string, string>();
@@ -42,14 +42,34 @@ function switcher(
             body: msg.trim(),
           },
         })
-      );
+      );break;
+    case 'AUDIO':
+      if(!msg) return;
+      sv.publish(room, JSON.stringify({
+        type: 'AUDIO',
+        msg: {
+          username: sock.data.nick,
+          body: msg.trim(),
+          type: 'audio'
+        }
+      }));break;
+    case 'IMG':
+      if(!msg) return;
+      sv.publish(room, JSON.stringify({
+        type: 'IMG',
+        msg: {
+          username: sock.data.nick,
+          body: msg.trim(),
+          type: 'image'
+        }
+      }));
   }
 }
 
 //ROOMS
 let rooms = new Map<string, Map<number, User>>([
   ["amigos1", new Map<number, User>()],
-  ["amigos", new Map<number, User>()],
+  ["amigos2", new Map<number, User>()],
   ["amor1", new Map<number, User>()],
   ["amor2", new Map<number, User>()],
   ["argentina", new Map<number, User>()],
@@ -213,9 +233,13 @@ const server = Bun.serve<WsData>({
       ws.unsubscribe(room);
       usernames.delete(nick.toUpperCase());
       //UPDATE ROOM LIST
-      let rm = rooms.get(room)!;
-      rm!.delete(id);
-      rooms.set(room, rm);
+      let rm = rooms.get(room);
+      try {
+        rm!.delete(id);
+      } catch (error) {
+        
+      }
+      rooms.set(room, rm!);
       server.publish(
         room,
         JSON.stringify({

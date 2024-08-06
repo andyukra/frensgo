@@ -32,7 +32,7 @@
         <p class="montserrat-alternates-regular">un chat para todxs</p>
     </div>
     <form on:submit|preventDefault={enter}>
-        <input class="montserrat-alternates-medium" type="text" placeholder="Escribe tu nick" maxlength="25" minlength="3" required bind:value={username} pattern="^(\w|\s|ñ)+$">
+        <input class="montserrat-alternates-bold" type="text" placeholder="Escribe tu nick..." maxlength="25" minlength="3" required bind:value={username} pattern="^(\w|\s|ñ)+$">
         <button class="montserrat-alternates-medium">chatear</button>
         <div class="check">
             <input type="checkbox" id="check" bind:checked={check}>
@@ -79,9 +79,10 @@
         gap: 15px
         input[type="text"]
             padding: 1rem
-            border-radius: 20px
+            border-radius: 8px
             border: none
-            box-shadow: inset 0 4px 4px var(--detailsL)
+            border-left: 5px solid var(--bgD)
+            box-shadow: 0 2px 4px #0004
             background: var(--bgMsgL)
             font-size: 1rem
             text-align: center
@@ -89,15 +90,15 @@
             &:focus
                 outline: none
             &::placeholder
-                color: white
+                color: #c0a9ff
         button
+            box-shadow: 0 2px 4px #0004
             padding: 1rem
             border: none
             background: var(--bgD)
             color: white
             font-size: 1rem
-            border-radius: 20px
-            box-shadow: 0 0 10px 1px var(--detailsL)
+            border-radius: 8px
             cursor: pointer
             transition: 0.3s
             &:hover

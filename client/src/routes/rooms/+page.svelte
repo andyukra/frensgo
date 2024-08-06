@@ -26,5 +26,7 @@
         flex-direction: column
         gap: 1rem
         height: calc(100dvh - 64px)
+        @media(max-width: 500px)
+            padding: 0.5rem 0.3rem
 
 </style>

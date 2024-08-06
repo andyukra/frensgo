@@ -40,7 +40,7 @@
     article
         padding: 2rem
         border-left: 20px solid var(--bgD)
-        border-radius: 20px
+        border-radius: 8px
         box-shadow: 0 4px 4px #0004
         display: flex
         align-items: center

@@ -19,6 +19,9 @@
     const enum Type {
         ROOM = 'room',
         BOT = 'bot',
+        AUDIO = 'audio',
+        IMAGE = 'image',
+        YT = 'yt'
     }
     type Msg = {
         username:string,
@@ -36,16 +39,6 @@
 
     //HELPERS
     function scrollToBottom(node:any) {node.scroll({ top: node.scrollHeight, behavior: 'smooth' });}
-
-    //CALLBACKS RETURNER PROPS FROM CHILDS
-    function cbAudio(data:Msg):void {
-        chatBX.push(data);
-        chatBX = chatBX;
-    }
-    function cbImage(data:Msg):void {
-        chatBX.push(data);
-        chatBX = chatBX;
-    }
 
     //GET LIST ON RENDER THIS PAGE
     onMount(() => {
@@ -107,6 +100,15 @@
                 break;
             case 'CALM':
                 $dialog = true;
+                break;
+            case 'AUDIO':
+                chatBX.push({...msg, type:Type.AUDIO });
+                chatBX = chatBX;
+                break;
+            case 'IMG':
+                chatBX.push({...msg, type:Type.IMAGE });
+                chatBX = chatBX;
+                break;
         }
     }
 
@@ -145,7 +147,7 @@
             {/each}
         </div>
         <div class="msg">
-            <Tools cbAudio={cbAudio} cbImage={cbImage}/>
+            <Tools />
             <form on:submit|preventDefault={roomMsg}>
                 <input class="montserrat-alternates-regular" type="text" placeholder="Escribe tu mensaje..." maxlength="120" minlength="1" bind:value={message}>
                 <button>
