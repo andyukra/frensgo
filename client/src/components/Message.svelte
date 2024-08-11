@@ -2,6 +2,8 @@
 
     //@ts-ignore
     import { myUser, modal, modalSrc } from '$lib/store';
+    import { onMount } from 'svelte';
+    import '@justinribeiro/lite-youtube';
 
     //TYPES
     const enum Type {
@@ -18,6 +20,17 @@
     }
     //PROPS
     export let data:data;
+
+    //VIDEO LOGIC
+    let ytCode:string|null = null;
+
+    onMount(()=>{
+        if(/^https:\/\/(www\.)?youtu.+\//.test(data.body)) {
+            const ytCodeUnparsed = data.body.match(/(\.be\/|v=).{11}/);
+            ytCode = ytCodeUnparsed![0].replace(ytCodeUnparsed![1], '');
+            data.type = Type.YT;
+        }
+    });
 
     //ME
     const me:boolean = $myUser.username === decodeURI(data.username);
@@ -43,7 +56,7 @@
         }
         return style;
     }
-    
+
 </script>
 
 <svelte:window bind:outerWidth={screen} />
@@ -55,15 +68,17 @@
         <h4 class="montserrat-alternates-bold">{decodeURI(data.username)} </h4>
     </div>
     <div class='bodyBX'>
-        <div class={`body ${data.type === Type.BOT ? 'typeBot' : data.type === Type.AUDIO ? 'typeAudio' : ''}`}>
+        <div class={`body ${data.type === Type.BOT ? 'typeBot' : data.type === Type.AUDIO ? 'typeAudio' : data.type === Type.IMAGE ? 'typeImg' : ''}`}>
             {#if data.type === Type.ROOM || data.type === Type.BOT}
                 <p class="montserrat-alternates-regular">{data.body}</p>
             {:else if  data.type === Type.AUDIO}
                 <audio src={data.body} controls ></audio>
             {:else if data.type === Type.IMAGE}
-                <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                <img class="typeImg" src={data.body} alt="Imagen subida Por un usuario" on:click={e=>openModal(e.target)}/>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+            <img src={data.body} alt="Imagen subida Por un usuario" on:click={e=>openModal(e.target)}/>
+            {:else if data.type === Type.YT}
+                <lite-youtube class="ytFrame" videoid={ytCode}></lite-youtube>
             {/if}
         </div>
     </div>
@@ -71,17 +86,26 @@
 
 <style lang="sass">
 
+    .ytFrame
+        width: 40vw
+        height: 400px
+        @media(max-width: 500px)
+            width: 75vw
+            height: 200px
+
     .typeAudio
         padding: 0 !important
         background: transparent !important
         box-shadow: none !important
 
     .typeImg
-        max-width: 300px
-        cursor: pointer
-        border-radius: 8px
-        @media(max-width: 500px)
-            max-width: 100%
+        img
+            max-width: 300px
+            cursor: pointer
+            border-radius: 8px
+            @media(max-width: 500px)
+                max-width: 250px
+    
 
     .typeBot
         background: transparent !important

@@ -69,7 +69,7 @@ function switcher(
 
 export const wsControllers = {
     open(ws:any, server:any) {
-        let { nick, room, id } = ws.data;
+      let { nick, room, id } = ws.data;
       if (!nick || !room || !ws.remoteAddress || !id) return;
       if (!rooms.has(room)) return;
       if (decodeURI(nick).length > 25) return;
@@ -119,7 +119,7 @@ export const wsControllers = {
       switcher(type, ws, ws.data.room, server, msg);
     },
     close(ws:any, server:any) {
-        let { nick, room, id } = ws.data;
+      let { nick, room, id } = ws.data;
       if (!nick || !room) return;
       server.publish(
         room,

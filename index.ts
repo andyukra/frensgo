@@ -12,7 +12,7 @@ const staticFolder = "./build";
 //ANTISPAM SYSTEM
 let bloqueds: Map<string | undefined, number> = new Map();
 function antispam(): (ws: any) => void {
-  let spamCount: number = 4;
+  let spamCount: number = 3;
   let lastTime: number = 0;
   let ticksToBan: number = 3;
   return (ws: any) => {
