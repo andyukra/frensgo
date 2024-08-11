@@ -24,7 +24,7 @@
 
     .movil
         display: none
-        @media(max-width: 500px)
+        @media(max-width: 1200px)
             display: block
 
     nav

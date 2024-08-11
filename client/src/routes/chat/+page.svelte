@@ -10,7 +10,9 @@
     //@ts-ignore
     import Tools from 'comp/Tools.svelte';
     //@ts-ignore
-    import { socket, myUser, userlist, dialog } from '$lib/store';
+    import Modal from 'comp/Modal.svelte';
+    //@ts-ignore
+    import { socket, myUser, userlist, dialog, modal, modalSrc } from '$lib/store';
     import { onMount, onDestroy } from 'svelte';
     //@ts-ignore
     import { goto } from '$app/navigation';
@@ -137,6 +139,9 @@
 
 {#if $dialog}
     <Dialog msg="Aver si nos calmamos un poquito :)" time={5000}/>
+{/if}
+{#if $modal && $modalSrc}
+    <Modal />
 {/if}
 <Navbar />
 <section>
