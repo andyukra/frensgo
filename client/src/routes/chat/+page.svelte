@@ -94,8 +94,14 @@
             case 'ROOM_MSG':
                 chatBX.push({...msg, type:Type.ROOM });
                 chatBX = chatBX;
-                if(chatBX.length >= 30) {
-                    chatBX.shift();
+                if(chatBX.length >= 100) {
+                    chatBX = [];
+                    const newMsg = {
+                        username: 'frensgo :',
+                        body: 'Limpieza automática activada',
+                        type: Type.BOT
+                    }
+                    chatBX.push(newMsg);
                     chatBX = chatBX;
                 }
                 setTimeout(()=>scrollToBottom(chatElem),0.1);

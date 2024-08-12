@@ -1,5 +1,5 @@
 import { Role } from "../types/core";
-import type { User } from "../types/core";
+import type { User, Room } from "../types/core";
 //LIST OF USERNAMES
 let usernames:Map<string, string> = new Map<string, string>();
 
@@ -146,5 +146,19 @@ export const wsControllers = {
         })
       );
       console.log("Se ha desconectado el usuario : ", nick);
+    },
+    //SEND ROOMS INFO TO FRONTEND
+    rooms(cors:ResponseInit) {
+      const resp:Array<Room> = [];
+      rooms.forEach((v,k) => {
+        const obj:Room = {
+          name: k,
+          value: k,
+          maxUsers: 50,
+          connectedUsers: v.size
+        };
+        resp.push(obj);
+      });
+      return new Response(JSON.stringify(resp), cors);
     }
 }

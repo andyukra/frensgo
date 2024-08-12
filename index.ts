@@ -1,4 +1,4 @@
-import type { User, WsData } from "./types/core";
+import type { WsData } from "./types/core";
 import { controllers } from "./controllers/controllers";
 import { wsControllers } from "./controllers/ws";
 
@@ -71,6 +71,8 @@ const server = Bun.serve<WsData>({
         return controllers.audio(req, cors);
       case "/upImg":
         return controllers.upImg(req, cors);
+      case '/getRooms' :
+        return wsControllers.rooms(cors);
       default:
         const filepath = staticFolder + url.pathname;
         const file = Bun.file(filepath);

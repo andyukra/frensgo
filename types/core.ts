@@ -17,3 +17,10 @@ export type WsData = {
     id: number;
     as: () => (ws:any) => void;
   };
+
+  export type Room = {
+    name: string,
+    value: string,
+    maxUsers: number,
+    connectedUsers: number
+  }
