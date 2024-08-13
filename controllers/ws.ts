@@ -63,12 +63,30 @@ function switcher(
             body: msg.trim(),
             type: 'image'
           }
+        }));break;
+      case 'STICKER':
+        if(!msg) return;
+        sv.publish(room, JSON.stringify({
+          type: 'STICKER',
+          msg: {
+            username: sock.data.nick,
+            body: msg.trim(),
+            type: 'STICKER'
+          }
         }));
     }
-  }
+}
+
+//ANTISPAM 2 OPEN AND CLOSE SOCKETS
+let lock:boolean = false;
 
 export const wsControllers = {
     open(ws:any, server:any) {
+      //ANTISPAM 2
+      if(lock) return;
+      lock = true;
+      setInterval(()=>lock = false, 5000);
+      //MAIN CODE
       let { nick, room, id } = ws.data;
       if (!nick || !room || !ws.remoteAddress || !id) return;
       if (!rooms.has(room)) return;
@@ -111,6 +129,7 @@ export const wsControllers = {
           msg: Array.from(rooms.get(room)!),
         })
       );
+      //CONSOLE LOG
       console.log(nick, "Se ha conectado a esta sala : ", room);
     },
     message(ws:any, server:any, message:string) {

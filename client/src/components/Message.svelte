@@ -11,7 +11,8 @@
         BOT = 'bot',
         AUDIO = 'audio',
         IMAGE = 'image',
-        YT = 'yt'
+        YT = 'yt',
+        STICKER = 'sticker'
     }
     type data = {
         body:string,
@@ -57,6 +58,17 @@
         return style;
     }
 
+    function bodyClass():string {
+        console.log(data.type)
+        switch(data.type) {
+            case Type.BOT : return 'typeBot';break;
+            case Type.AUDIO : return 'typeAudio';break;
+            case Type.IMAGE : return 'typeImg';break;
+            case Type.STICKER : return 'typeBot';break;
+            default: return ""
+        }
+    }
+
 </script>
 
 <svelte:window bind:outerWidth={screen} />
@@ -68,15 +80,15 @@
         <h4 class="montserrat-alternates-bold">{decodeURI(data.username)} </h4>
     </div>
     <div class='bodyBX'>
-        <div class={`body ${data.type === Type.BOT ? 'typeBot' : data.type === Type.AUDIO ? 'typeAudio' : data.type === Type.IMAGE ? 'typeImg' : ''}`}>
+        <div class={`body ${bodyClass()}`}>
             {#if data.type === Type.ROOM || data.type === Type.BOT}
                 <p class="montserrat-alternates-regular">{data.body}</p>
             {:else if  data.type === Type.AUDIO}
                 <audio src={data.body} controls ></audio>
-            {:else if data.type === Type.IMAGE}
+            {:else if data.type === Type.IMAGE || data.type === Type.STICKER}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-            <img src={data.body} alt="Imagen subida Por un usuario" on:click={e=>openModal(e.target)}/>
+            <img src={data.body} alt="Imagen subida Por un usuario" on:click={e=>openModal(e.target)} style={`cursor:pointer;${data.type === Type.STICKER ? 'width:150px;' : ''}`}/>
             {:else if data.type === Type.YT}
                 <lite-youtube class="ytFrame" videoid={ytCode}></lite-youtube>
             {/if}
@@ -101,7 +113,6 @@
     .typeImg
         img
             max-width: 300px
-            cursor: pointer
             border-radius: 8px
             @media(max-width: 500px)
                 max-width: 250px

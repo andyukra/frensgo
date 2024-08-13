@@ -23,7 +23,8 @@
         BOT = 'bot',
         AUDIO = 'audio',
         IMAGE = 'image',
-        YT = 'yt'
+        YT = 'yt',
+        STICKER = 'sticker'
     }
     type Msg = {
         username:string,
@@ -115,6 +116,10 @@
                 break;
             case 'IMG':
                 chatBX.push({...msg, type:Type.IMAGE });
+                chatBX = chatBX;
+                break;
+            case 'STICKER':
+                chatBX.push({...msg, type:Type.STICKER });
                 chatBX = chatBX;
                 break;
         }
