@@ -6,7 +6,6 @@ const audioFldr = `${__dirname}/../build/audios`;
 const imgsFldr = `${__dirname}/../build/imgs`;
 //DEV AND HOST ORIGIN
 const host:string = 'https://frensgo.lat';
-// const host: string = "http://localhost:5173";
 // const dev: string = "http://localhost:3000";
 
 export const controllers = {

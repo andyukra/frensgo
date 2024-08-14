@@ -12,7 +12,7 @@
     //@ts-ignore
     import Modal from 'comp/Modal.svelte';
     //@ts-ignore
-    import { socket, myUser, userlist, dialog, modal, modalSrc } from '$lib/store';
+    import { socket, myUser, userlist, dialog, modal, modalSrc, muted } from '$lib/store';
     import { onMount, onDestroy } from 'svelte';
     //@ts-ignore
     import { goto } from '$app/navigation';
@@ -56,17 +56,6 @@
         $socket = null;
     });
 
-    // function reconnect() {
-    //     $socket = new WebSocket(`ws://localhost:3000/ws/${$myUser.room}/${$myUser.username}`);
-    //     $socket.onmessage = (e:any) => {
-    //     const { type, msg } = JSON.parse(e.data);
-    //     switcher(type, msg);
-    //     }
-    //     $socket.onclose = (e:any) => {
-    //         setTimeout(reconnect, 3000);
-    //     }
-    // }
-
     //EVENTS SWITCH
     function switcher(type:string, msg:any|undefined):void {
         switch(type) {
@@ -93,6 +82,7 @@
                 chatBX = chatBX;
                 break;
             case 'ROOM_MSG':
+                if($muted.has(msg.username)) return;
                 chatBX.push({...msg, type:Type.ROOM });
                 chatBX = chatBX;
                 if(chatBX.length >= 100) {
@@ -132,7 +122,6 @@
     }
 
     $socket.onclose = () => {
-        // setTimeout(reconnect, 3000);
         goto('/rooms');
     }
 
@@ -186,8 +175,7 @@
     .showUserlist
         position: fixed
         z-index: 2
-        left: 0 !important    
-        opacity: 1 !important
+        left: 0 !important
 
     section
         display: flex
@@ -260,7 +248,7 @@
             flex: 1
             border-radius: 8px
             box-shadow: 0 4px 4px #0003
-            transition: 0.3s cubic-bezier(.87, -1.38, .03, 1.54)
+            transition: 0.3s
             @media(max-width: 1200px)
                 position: fixed
                 left: 100%
@@ -268,7 +256,6 @@
                 height: calc(100dvh - 64px)
                 border-radius: 0 !important
                 top: 64px
-                opacity: 0
                 h3
                     border-radius: 0 !important
             h3

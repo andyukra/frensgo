@@ -59,7 +59,6 @@
     }
 
     function bodyClass():string {
-        console.log(data.type)
         switch(data.type) {
             case Type.BOT : return 'typeBot';break;
             case Type.AUDIO : return 'typeAudio';break;
@@ -150,9 +149,11 @@
                 font-size: 2.5rem
                 color: var(--bgD)
                 @media(max-width: 500px)
-                    font-size: 2rem
+                    font-size: 1.5rem
             h4
                 text-align: center
+                @media(max-width: 500px)
+                    font-size: 1rem
         .bodyBX
             .body
                 padding: 1rem
@@ -165,7 +166,10 @@
                 align-items: center
                 color: var(--txtSL)
                 @media(max-width: 500px)
-                    padding: 0.7rem
+                    padding: 0.5rem 0.8rem
+                p
+                    @media(max-width: 500px)
+                        font-size: 0.8rem
     
     @keyframes appear
         from

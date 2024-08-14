@@ -13,3 +13,4 @@ export const userlist = writable<boolean>(false);
 export const dialog = writable<boolean>(false);
 export const modal = writable<boolean>(false);
 export const modalSrc = writable<string>('');
+export const muted = writable<Set<string>>(new Set());
