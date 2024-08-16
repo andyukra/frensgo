@@ -1,6 +1,6 @@
 <script lang="ts">
     //@ts-ignore
-    import { myUser, muted } from '$lib/store';
+    import { myUser, muted, socket, pvs, pvBox } from '$lib/store';
 
     //TYPE
     type User = {
@@ -43,6 +43,24 @@
         stateOpts = false;
     }
 
+    //PRIVATE
+    function openPv():void {
+        $socket.send(JSON.stringify({
+            type: 'OPEN_PV',
+            msg: { to: id }
+        }))
+        const obj = {
+            id: id,
+            nick: data.username,
+            me: $myUser.id
+        }
+        $pvs.add(JSON.stringify(obj));
+        $pvs = $pvs;
+        $pvBox.set(id, []);
+        //CLOSE OPTS
+        stateOpts = false;
+    }
+
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -67,6 +85,11 @@
                 <i class="fas fa-volume-mute"></i>               
             </li>           
         {/if}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <li class="cancel" on:click={openPv}>
+            <p class="montserrat-alternates-bold">Privado</p>
+            <i class="fa-solid fa-message"></i>
+        </li>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <li class="cancel" on:click={toggleOpts}>
             <p class="montserrat-alternates-bold">cancelar</p>

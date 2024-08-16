@@ -9,6 +9,7 @@ export const enum Role {
 export type User = {
     username:string;
     role:Role;
+    ws:any;
 }
 
 export type WsData = {

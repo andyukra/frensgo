@@ -74,6 +74,28 @@ function switcher(
             type: 'STICKER'
           }
         }));
+        break;
+      case 'OPEN_PV':
+        if(!msg) return;
+          rooms.get(room!)?.get(msg.to)?.ws.send(JSON.stringify({
+            type: "OPEN_PV",
+            msg: { me: msg.to, nick: sock.data.nick, from: sock.data.id }
+          }));
+          break
+      case 'PV':
+        if(!msg) return;
+          rooms.get(room!)?.get(msg.to)?.ws.send(JSON.stringify({
+            type: "PV",
+            msg: { fromId: sock.data.id, fromNick: sock.data.nick, body: msg.body }
+          }));
+          break;
+      case 'CLOSE_PV':
+        if(!msg) return;
+          rooms.get(room!)?.get(msg.to)?.ws.send(JSON.stringify({
+            type: "CLOSE_PV",
+            msg: { from: sock.data.id, nick: sock.data.nick, to: msg.to }
+          }));
+          break;
     }
 }
 
@@ -83,9 +105,9 @@ let lock:boolean = false;
 export const wsControllers = {
     open(ws:any, server:any) {
       //ANTISPAM 2
-      if(lock) return;
-      lock = true;
-      setInterval(()=>lock = false, 5000);
+      // if(lock) return;
+      // lock = true;
+      // setInterval(()=>lock = false, 5000);
       //MAIN CODE
       let { nick, room, id } = ws.data;
       if (!nick || !room || !ws.remoteAddress || !id) return;
@@ -103,6 +125,7 @@ export const wsControllers = {
       const user = {
         username: nick,
         role: Role.GUEST,
+        ws: ws
       };
       //UPDATE ROOM WITH NEW USER
       rooms.set(room, rooms.get(room)!.set(id, user));
@@ -112,6 +135,7 @@ export const wsControllers = {
       ws.send(
         JSON.stringify({
           type: "CONNECTED",
+          id: ws.data.id
         })
       );
       //SEND EVENTS TO ALL USERS OF ROOM

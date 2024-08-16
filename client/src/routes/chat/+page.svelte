@@ -12,7 +12,9 @@
     //@ts-ignore
     import Modal from 'comp/Modal.svelte';
     //@ts-ignore
-    import { socket, myUser, userlist, dialog, modal, modalSrc, muted } from '$lib/store';
+    import Pv from 'comp/Pv.svelte';
+    //@ts-ignore
+    import { socket, myUser, userlist, dialog, modal, modalSrc, muted, pvs, pvBox } from '$lib/store';
     import { onMount, onDestroy } from 'svelte';
     //@ts-ignore
     import { goto } from '$app/navigation';
@@ -24,14 +26,14 @@
         AUDIO = 'audio',
         IMAGE = 'image',
         YT = 'yt',
-        STICKER = 'sticker'
+        STICKER = 'sticker',
+        PV = 'pv'
     }
     type Msg = {
         username:string,
         body:string,
         type:Type
     }
-
 
     //SET GLOBAL VARIABLES
     let message:string = '';
@@ -103,15 +105,47 @@
             case 'AUDIO':
                 chatBX.push({...msg, type:Type.AUDIO });
                 chatBX = chatBX;
+                setTimeout(()=>scrollToBottom(chatElem),0.1);
                 break;
             case 'IMG':
                 chatBX.push({...msg, type:Type.IMAGE });
                 chatBX = chatBX;
+                setTimeout(()=>scrollToBottom(chatElem),0.1);
                 break;
             case 'STICKER':
                 chatBX.push({...msg, type:Type.STICKER });
                 chatBX = chatBX;
+                setTimeout(()=>scrollToBottom(chatElem),0.1);
                 break;
+            case 'OPEN_PV':
+                const obj1 = {
+                    id: msg.from,
+                    nick: msg.nick,
+                    me: msg.me
+                }
+                $pvs.add(JSON.stringify(obj1));
+                $pvs = $pvs;
+                $pvBox.set(msg.from, []);
+                break;
+                case 'CLOSE_PV':
+                    const obj = {
+                        id: msg.from,
+                        nick: msg.nick,
+                        me: msg.to
+                    }
+                    $pvs.delete(JSON.stringify(obj));
+                    $pvs = $pvs;
+                    $pvBox.delete(msg.from);
+                break;
+            case 'PV':
+                if(!$pvBox.has(msg.fromId)) return;
+                $pvBox.get(msg.fromId).push({
+                    username: msg.fromNick,
+                    body: msg.body,
+                    type: Type.PV
+                });
+                $pvBox = $pvBox;
+            
         }
     }
 
@@ -143,6 +177,9 @@
 {#if $modal && $modalSrc}
     <Modal />
 {/if}
+{#each $pvs as pv}
+    <Pv nick={JSON.parse(pv).nick} fromId={JSON.parse(pv).id} me={JSON.parse(pv).me}/>
+{/each}
 <Navbar />
 <section>
     <article class="chatBX">
@@ -184,6 +221,8 @@
         width: 100%
         padding: 1rem
         background: var(--bgL)
+        overflow: hidden
+        position: fixed
         @media(max-width: 500px)
             padding: 0.5rem
         article.chatBX

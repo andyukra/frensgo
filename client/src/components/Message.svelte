@@ -12,7 +12,8 @@
         AUDIO = 'audio',
         IMAGE = 'image',
         YT = 'yt',
-        STICKER = 'sticker'
+        STICKER = 'sticker',
+        PV = 'pv'
     }
     type data = {
         body:string,
@@ -64,6 +65,7 @@
             case Type.AUDIO : return 'typeAudio';break;
             case Type.IMAGE : return 'typeImg';break;
             case Type.STICKER : return 'typeBot';break;
+            case Type.PV: return 'typePv';break;
             default: return ""
         }
     }
@@ -80,7 +82,7 @@
     </div>
     <div class='bodyBX'>
         <div class={`body ${bodyClass()}`}>
-            {#if data.type === Type.ROOM || data.type === Type.BOT}
+            {#if data.type === Type.ROOM || data.type === Type.BOT || data.type === Type.PV}
                 <p class="montserrat-alternates-regular">{data.body}</p>
             {:else if  data.type === Type.AUDIO}
                 <audio src={data.body} controls ></audio>
@@ -96,6 +98,10 @@
 </article>
 
 <style lang="sass">
+
+    .typePv
+        padding: 0.5rem 0.8rem !important
+        margin-bottom: 0.4rem
 
     .ytFrame
         width: 40vw

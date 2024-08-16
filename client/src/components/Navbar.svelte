@@ -34,6 +34,8 @@
         height: 64px
         padding: 0 1rem
         background: var(--bgD)
+        position: sticky
+        top: 0
         h1
             color: white
         a

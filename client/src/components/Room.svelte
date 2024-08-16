@@ -17,7 +17,8 @@
         $myUser = {...$myUser, room:room};
         $socket = new WebSocket(`${host}/chat?room=${$myUser.room}&nick=${$myUser.username}`);
         $socket.onmessage = (e:any) => {
-            const { type } = JSON.parse(e.data);
+            const { type, id } = JSON.parse(e.data);
+            if(!$myUser.id) $myUser = {...$myUser, id:id}
             if(type && type === 'CONNECTED') {
                 goto('/chat');
             }
