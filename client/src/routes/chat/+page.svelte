@@ -14,7 +14,7 @@
     //@ts-ignore
     import Pv from 'comp/Pv.svelte';
     //@ts-ignore
-    import { socket, myUser, userlist, dialog, modal, modalSrc, muted, pvs, pvBox } from '$lib/store';
+    import { socket, myUser, userlist, dialog, modal, modalSrc, muted, pvs, pvBox, pvAccept, whispTarget } from '$lib/store';
     import { onMount, onDestroy } from 'svelte';
     //@ts-ignore
     import { goto } from '$app/navigation';
@@ -27,7 +27,8 @@
         IMAGE = 'image',
         YT = 'yt',
         STICKER = 'sticker',
-        PV = 'pv'
+        PV = 'pv',
+        WHISPER = 'whisper',
     }
     type Msg = {
         username:string,
@@ -121,6 +122,7 @@
                 setTimeout(()=>scrollToBottom(chatElem),0.1);
                 break;
             case 'OPEN_PV':
+                if($pvAccept) return;
                 if($muted.has(msg.nick)) return;
                 const obj1 = {
                     id: msg.from,
@@ -132,17 +134,17 @@
                 $pvs = $pvs;
                 $pvBox.set(msg.from, []);
                 break;
-                case 'CLOSE_PV':
-                    if($muted.has(msg.nick)) return;
-                    const obj = {
-                        id: msg.from,
-                        nick: msg.nick,
-                        me: msg.to,
-                        avatar: msg.avatar
-                    }
-                    $pvs.delete(JSON.stringify(obj));
-                    $pvs = $pvs;
-                    $pvBox.delete(msg.from);
+            case 'CLOSE_PV':
+                if($pvAccept) return;
+                const obj = {
+                    id: msg.from,
+                    nick: msg.nick,
+                    me: msg.to,
+                    avatar: msg.avatar
+                }
+                $pvs.delete(JSON.stringify(obj));
+                $pvs = $pvs;
+                $pvBox.delete(msg.from);
                 break;
             case 'PV':
                 if($muted.has(msg.fromNick)) return;
@@ -154,7 +156,12 @@
                     avatar: msg.fromAvatar
                 });
                 $pvBox = $pvBox;
-            
+                break;
+            case 'WHISP':
+                if($muted.has(msg.fromNick)) return;
+                chatBX.push({...msg, type:Type.WHISPER });
+                chatBX = chatBX;
+                setTimeout(()=>scrollToBottom(chatElem),0.1);           
         }
     }
 
@@ -171,10 +178,19 @@
     //FORM HANDLERS
     function roomMsg():void {
         if(!message || message.length === 0 || message.length > 120) return;
-        $socket.send(JSON.stringify({
-            type: 'ROOM_MSG',
-            msg: message.trim(),
-        }));
+        if($whispTarget) {
+            $socket.send(JSON.stringify({
+                type: 'WHISP',
+                msg: { to: $whispTarget.id, body: message.trim() }
+            }));
+            chatBX.push({username: $myUser.username, body: message.trim() ,type:Type.WHISPER });
+            chatBX = chatBX;
+        } else {
+            $socket.send(JSON.stringify({
+                type: 'ROOM_MSG',
+                msg: message.trim(),
+            }));
+        }
         message = '';
     }
 

@@ -100,6 +100,14 @@ function switcher(
             msg: { from: sock.data.id, nick: sock.data.nick, to: msg.to, avatar: sock.data.avatar }
           }));
           break;
+        case 'WHISP':
+          if(!msg) return;
+          rooms.get(room!)?.get(msg.to)?.ws.send(JSON.stringify({
+            type: "WHISP",
+            msg: { from: sock.data.id, username: sock.data.nick, avatar: sock.data.avatar, body: msg.body }
+          }));
+          break;
+
     }
 }
 

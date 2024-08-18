@@ -34,7 +34,6 @@ function antispam(): (ws: any) => void {
 
 //SERVER CHAT
 const server = Bun.serve<WsData>({
-  development: true,
   port: 3000,
   async fetch(req, server) {
     const origin = req.headers.get("origin");

@@ -1,6 +1,6 @@
 <script lang="ts">
     //@ts-ignore
-    import { myUser, muted, socket, pvs, pvBox } from '$lib/store';
+    import { myUser, muted, socket, pvs, pvBox, whispTarget } from '$lib/store';
 
     //TYPE
     type User = {
@@ -63,6 +63,17 @@
         stateOpts = false;
     }
 
+    //WHISPERS
+    function whisp():void {
+        $whispTarget = {
+            username: data.username,
+            id: id
+        }
+        //CLOSE OPTS
+        stateOpts = false;
+        console.log($whispTarget)
+    }
+
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -92,12 +103,17 @@
             </li>           
         {/if}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <li class="cancel" on:click={openPv}>
-            <p class="montserrat-alternates-bold">Privado</p>
+        <li on:click={openPv}>
+            <p class="montserrat-alternates-bold">privado</p>
             <i class="fa-solid fa-message"></i>
         </li>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <li class="cancel" on:click={toggleOpts}>
+        <li on:click={whisp}>
+            <p class="montserrat-alternates-bold">susurrar</p>
+            <i class="fa-solid fa-ear-listen"></i>
+        </li>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <li on:click={toggleOpts}>
             <p class="montserrat-alternates-bold">cancelar</p>
             <i class="fas fa-times"></i>
         </li>

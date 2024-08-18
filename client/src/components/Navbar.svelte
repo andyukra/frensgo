@@ -2,7 +2,7 @@
     //@ts-ignore
     import { page } from '$app/stores';
     //@ts-ignore
-    import { myUser, userlist } from '$lib/store';
+    import { myUser, userlist, pvAccept } from '$lib/store';
     import { onMount } from 'svelte';
     //@ts-ignore
     import { goto } from '$app/navigation';
@@ -75,6 +75,11 @@
                     <li on:click={clearAvatar}>
                         <p class="montserrat-alternates-bold">quitar foto</p>
                         <i class="fa-solid fa-camera-rotate"></i>
+                    </li>
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <li on:click={()=>console.log($pvAccept)}>
+                        <p class="montserrat-alternates-bold">bloquear privados</p>
+                        <input type="checkbox" id="pvAccept" bind:checked={$pvAccept}>
                     </li>
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <li on:click={closeOpts}>

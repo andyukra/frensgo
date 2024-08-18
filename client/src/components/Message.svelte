@@ -14,6 +14,7 @@
         YT = 'yt',
         STICKER = 'sticker',
         PV = 'pv',
+        WHISPER = 'whisper',
     }
     type data = {
         body:string,
@@ -88,10 +89,13 @@
             {/if}
         {/if}
         <h4 class="montserrat-alternates-bold">{decodeURI(data.username)} </h4>
+        {#if data.type === Type.WHISPER}
+            <p class="montserrat-alternates-bold">(susurro): </p>
+        {/if}
     </div>
     <div class='bodyBX'>
         <div class={`body ${bodyClass()}`}>
-            {#if data.type === Type.ROOM || data.type === Type.BOT || data.type === Type.PV}
+            {#if data.type === Type.ROOM || data.type === Type.BOT || data.type === Type.PV || data.type === Type.WHISPER}
                 <p class="montserrat-alternates-regular">{data.body}</p>
             {:else if  data.type === Type.AUDIO}
                 <audio src={data.body} controls ></audio>
