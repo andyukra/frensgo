@@ -138,6 +138,14 @@
         color: var(--txtPL) !important
         padding: 0 !important
         margin: 0.5rem 0
+        & > img
+            border-radius: 8px
+            box-shadow: 3px 3px 5px #0003
+            width: 130px !important
+            height: 130px
+            @media(max-width: 500px)
+                width: 100px !important
+                height: 100px
     .me
         flex-direction: row-reverse
         .username

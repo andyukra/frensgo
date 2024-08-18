@@ -108,10 +108,10 @@ let lock:boolean = false;
 
 export const wsControllers = {
     open(ws:any, server:any) {
-      //ANTISPAM 2
-      // if(lock) return;
-      // lock = true;
-      // setInterval(()=>lock = false, 5000);
+      // ANTISPAM 2
+      if(lock) return;
+      lock = true;
+      setInterval(()=>lock = false, 5000);
       //MAIN CODE
       let { nick, room, id, avatar } = ws.data;
       if (!nick || !room || !ws.remoteAddress || !id) return;

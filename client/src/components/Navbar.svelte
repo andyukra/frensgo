@@ -32,6 +32,19 @@
         return;
     }
 
+    function clearAvatar():void {
+        localStorage.setItem('avatar', '');
+        $myUser.avatar = '';
+        optsState = false;
+        goto('/rooms');
+        return;
+    }
+
+    function closeOpts():void {
+        changeAvatarStatus = false;
+        optsState = !optsState;
+    }
+
 </script>
 
 <nav>
@@ -59,7 +72,12 @@
                         </li>
                     {/if}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <li on:click={()=>optsState = !optsState}>
+                    <li on:click={clearAvatar}>
+                        <p class="montserrat-alternates-bold">quitar foto</p>
+                        <i class="fa-solid fa-camera-rotate"></i>
+                    </li>
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <li on:click={closeOpts}>
                         <p class="montserrat-alternates-bold">cancelar</p>
                         <i class="fas fa-times"></i>
                     </li>
@@ -69,10 +87,10 @@
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         {#if !$myUser.avatar}
-            <i class="fa-solid fa-circle-user" on:click={()=>optsState = !optsState}></i>
+            <i class="fa-solid fa-circle-user" on:click={closeOpts}></i>
         {:else}
             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-            <img src={$myUser.avatar} alt="My avatar" on:click={()=>optsState = !optsState}>
+            <img src={$myUser.avatar} alt="My avatar" on:click={closeOpts}>
         {/if}
         <!-- svelte-ignore a11y-no-static-element-interactions -->
         {#if $page.url.pathname === '/chat'}
