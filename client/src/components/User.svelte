@@ -6,6 +6,7 @@
     type User = {
         username: string,
         role: string,
+        avatar: string
     }
 
     //PROPS
@@ -52,7 +53,8 @@
         const obj = {
             id: id,
             nick: data.username,
-            me: $myUser.id
+            me: $myUser.id,
+            avatar: data.avatar
         }
         $pvs.add(JSON.stringify(obj));
         $pvs = $pvs;
@@ -66,7 +68,11 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <article data-id={id} on:click={toggleOpts} class:muted={isMuted}>
-    <i class="fa-solid fa-circle-user"></i>
+    {#if data.avatar.length > 0}
+        <img src={data.avatar} alt="my avatar">
+    {:else}
+        <i class="fa-solid fa-circle-user"></i>
+    {/if}
     <h4 class="montserrat-alternates-bold">{decodeURI(data.username)}</h4>
     <i class="fa-solid fa-circle-question"></i>
 </article>
@@ -121,6 +127,10 @@
         background: transparent
         color: var(--txtPL)
         position: relative
+        & > img
+            width: 35px
+            height: 35px
+            border-radius: 50%
         i:nth-child(1)
             font-size: 2rem
         i:nth-child(2)

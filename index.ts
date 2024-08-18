@@ -53,10 +53,11 @@ const server = Bun.serve<WsData>({
     switch (url.pathname) {
       case "/chat":
         if (
-          server.upgrade(req, {
+          server.upgrade<WsData>(req, {
             data: {
               nick: url.searchParams.get("nick"),
               room: url.searchParams.get("room"),
+              avatar: url.searchParams.get('avatar'),
               id: Date.now(),
               as: antispam(),
             },

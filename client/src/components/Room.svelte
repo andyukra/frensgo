@@ -15,7 +15,7 @@
     function goChat(room:string):void {
         if(!$myUser) return;
         $myUser = {...$myUser, room:room};
-        $socket = new WebSocket(`${host}/chat?room=${$myUser.room}&nick=${$myUser.username}`);
+        $socket = new WebSocket(`${host}/chat?room=${$myUser.room}&nick=${$myUser.username}&avatar=${$myUser.avatar ? $myUser.avatar : ''}`);
         $socket.onmessage = (e:any) => {
             const { type, id } = JSON.parse(e.data);
             if(!$myUser.id) $myUser = {...$myUser, id:id}

@@ -13,7 +13,8 @@ type user = {
     username: string;
     role: string,
     room: string,
-    id:number
+    id:number,
+    avatar: string|undefined
 }
 
 type pv = {

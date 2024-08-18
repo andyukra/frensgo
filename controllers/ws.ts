@@ -40,6 +40,7 @@ function switcher(
             type: "ROOM_MSG",
             msg: {
               username: sock.data.nick,
+              avatar: sock.data.avatar,
               body: msg.trim(),
             },
           })
@@ -50,6 +51,7 @@ function switcher(
           type: 'AUDIO',
           msg: {
             username: sock.data.nick,
+            avatar: sock.data.avatar,
             body: msg.trim(),
             type: 'audio'
           }
@@ -60,6 +62,7 @@ function switcher(
           type: 'IMG',
           msg: {
             username: sock.data.nick,
+            avatar: sock.data.avatar,
             body: msg.trim(),
             type: 'image'
           }
@@ -70,6 +73,7 @@ function switcher(
           type: 'STICKER',
           msg: {
             username: sock.data.nick,
+            avatar: sock.data.avatar,
             body: msg.trim(),
             type: 'STICKER'
           }
@@ -79,21 +83,21 @@ function switcher(
         if(!msg) return;
           rooms.get(room!)?.get(msg.to)?.ws.send(JSON.stringify({
             type: "OPEN_PV",
-            msg: { me: msg.to, nick: sock.data.nick, from: sock.data.id }
+            msg: { me: msg.to, nick: sock.data.nick, from: sock.data.id, avatar: sock.data.avatar }
           }));
           break
       case 'PV':
         if(!msg) return;
           rooms.get(room!)?.get(msg.to)?.ws.send(JSON.stringify({
             type: "PV",
-            msg: { fromId: sock.data.id, fromNick: sock.data.nick, body: msg.body }
+            msg: { fromId: sock.data.id, fromNick: sock.data.nick, body: msg.body, fromAvatar: sock.data.avatar }
           }));
           break;
       case 'CLOSE_PV':
         if(!msg) return;
           rooms.get(room!)?.get(msg.to)?.ws.send(JSON.stringify({
             type: "CLOSE_PV",
-            msg: { from: sock.data.id, nick: sock.data.nick, to: msg.to }
+            msg: { from: sock.data.id, nick: sock.data.nick, to: msg.to, avatar: sock.data.avatar }
           }));
           break;
     }
@@ -109,7 +113,7 @@ export const wsControllers = {
       // lock = true;
       // setInterval(()=>lock = false, 5000);
       //MAIN CODE
-      let { nick, room, id } = ws.data;
+      let { nick, room, id, avatar } = ws.data;
       if (!nick || !room || !ws.remoteAddress || !id) return;
       if (!rooms.has(room)) return;
       if (decodeURI(nick).length > 25) return;
@@ -122,10 +126,11 @@ export const wsControllers = {
       } else {
         usernames.set(nick.toUpperCase(), ws.remoteAddress);
       }
-      const user = {
+      const user:User = {
         username: nick,
         role: Role.GUEST,
-        ws: ws
+        ws: ws,
+        avatar: avatar
       };
       //UPDATE ROOM WITH NEW USER
       rooms.set(room, rooms.get(room)!.set(id, user));

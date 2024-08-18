@@ -103,46 +103,55 @@
                 $dialog = true;
                 break;
             case 'AUDIO':
+                if($muted.has(msg.username)) return;
                 chatBX.push({...msg, type:Type.AUDIO });
                 chatBX = chatBX;
                 setTimeout(()=>scrollToBottom(chatElem),0.1);
                 break;
             case 'IMG':
+                if($muted.has(msg.username)) return;
                 chatBX.push({...msg, type:Type.IMAGE });
                 chatBX = chatBX;
                 setTimeout(()=>scrollToBottom(chatElem),0.1);
                 break;
             case 'STICKER':
+                if($muted.has(msg.username)) return;
                 chatBX.push({...msg, type:Type.STICKER });
                 chatBX = chatBX;
                 setTimeout(()=>scrollToBottom(chatElem),0.1);
                 break;
             case 'OPEN_PV':
+                if($muted.has(msg.nick)) return;
                 const obj1 = {
                     id: msg.from,
                     nick: msg.nick,
-                    me: msg.me
+                    me: msg.me,
+                    avatar: msg.avatar
                 }
                 $pvs.add(JSON.stringify(obj1));
                 $pvs = $pvs;
                 $pvBox.set(msg.from, []);
                 break;
                 case 'CLOSE_PV':
+                    if($muted.has(msg.nick)) return;
                     const obj = {
                         id: msg.from,
                         nick: msg.nick,
-                        me: msg.to
+                        me: msg.to,
+                        avatar: msg.avatar
                     }
                     $pvs.delete(JSON.stringify(obj));
                     $pvs = $pvs;
                     $pvBox.delete(msg.from);
                 break;
             case 'PV':
+                if($muted.has(msg.fromNick)) return;
                 if(!$pvBox.has(msg.fromId)) return;
                 $pvBox.get(msg.fromId).push({
                     username: msg.fromNick,
                     body: msg.body,
-                    type: Type.PV
+                    type: Type.PV,
+                    avatar: msg.fromAvatar
                 });
                 $pvBox = $pvBox;
             
@@ -178,7 +187,7 @@
     <Modal />
 {/if}
 {#each $pvs as pv}
-    <Pv nick={JSON.parse(pv).nick} fromId={JSON.parse(pv).id} me={JSON.parse(pv).me}/>
+    <Pv nick={JSON.parse(pv).nick} fromId={JSON.parse(pv).id} me={JSON.parse(pv).me} avatar={JSON.parse(pv).avatar}/>
 {/each}
 <Navbar />
 <section>

@@ -13,12 +13,13 @@
         IMAGE = 'image',
         YT = 'yt',
         STICKER = 'sticker',
-        PV = 'pv'
+        PV = 'pv',
     }
     type data = {
         body:string,
         username:string,
-        type:Type
+        type:Type,
+        avatar:string,
     }
     //PROPS
     export let data:data;
@@ -76,7 +77,15 @@
 <article class={`${me ? 'me' : ''}`} style={articleMobile(screen)}>
     <div class="username">
         {#if data.type !== Type.BOT}
-            <i class="fa-solid fa-circle-user"></i>
+            {#if data.avatar}
+                {#if data.avatar.length > 0}
+                    <img src={data.avatar} alt="avatar of user">
+                {:else}
+                    <i class="fa-solid fa-circle-user"></i>
+                {/if}
+            {:else}
+                <i class="fa-solid fa-circle-user"></i>
+            {/if}
         {/if}
         <h4 class="montserrat-alternates-bold">{decodeURI(data.username)} </h4>
     </div>
@@ -148,6 +157,10 @@
             align-items: center
             gap: 1rem
             color: var(--bgD)
+            & > img
+                width: 2.5rem
+                height: 2.5rem
+                border-radius: 50%
             @media(max-width: 500px)
                 flex-direction: row
                 gap: 0.4rem

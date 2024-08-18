@@ -10,13 +10,15 @@ export type User = {
     username:string;
     role:Role;
     ws:any;
+    avatar: string|null;
 }
 
 export type WsData = {
-    nick: string;
-    room: string;
+    nick: string|null;
+    room: string|null;
     id: number;
-    as: () => (ws:any) => void;
+    as: (ws:any) => void;
+    avatar: string|null;
   };
 
   export type Room = {
