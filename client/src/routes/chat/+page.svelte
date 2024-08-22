@@ -161,7 +161,10 @@
                 if($muted.has(msg.fromNick)) return;
                 chatBX.push({...msg, type:Type.WHISPER });
                 chatBX = chatBX;
-                setTimeout(()=>scrollToBottom(chatElem),0.1);           
+                setTimeout(()=>scrollToBottom(chatElem),0.1);
+                break;
+            case 'BANNED':
+                location.href = 'https://www.google.com/search?q=como+ser+mejor+persona';
         }
     }
 
@@ -172,7 +175,7 @@
     }
 
     $socket.onclose = () => {
-        goto('/rooms');
+        goto('/');
     }
 
     //FORM HANDLERS
@@ -185,6 +188,7 @@
             }));
             chatBX.push({username: $myUser.username, body: message.trim() ,type:Type.WHISPER });
             chatBX = chatBX;
+            setTimeout(()=>scrollToBottom(chatElem),0.1);
         } else {
             $socket.send(JSON.stringify({
                 type: 'ROOM_MSG',

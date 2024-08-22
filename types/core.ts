@@ -17,6 +17,7 @@ export type WsData = {
     nick: string|null;
     room: string|null;
     id: number;
+    role: Role,
     as: (ws:any) => void;
     avatar: string|null;
   };
@@ -26,4 +27,10 @@ export type WsData = {
     value: string,
     maxUsers: number,
     connectedUsers: number
+  }
+
+  //R E G I S T R E D  U S E R S
+  export type registred = {
+    password: string,
+    role: Role
   }

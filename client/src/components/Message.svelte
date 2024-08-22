@@ -130,10 +130,10 @@
 
     .typeImg
         img
-            max-width: 300px
+            max-width: 100px
             border-radius: 8px
             @media(max-width: 500px)
-                max-width: 250px
+                max-width: 100px
     
 
     .typeBot
@@ -144,7 +144,6 @@
         margin: 0.5rem 0
         & > img
             border-radius: 8px
-            box-shadow: 3px 3px 5px #0003
             width: 130px !important
             height: 130px
             @media(max-width: 500px)

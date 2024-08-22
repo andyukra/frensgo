@@ -3,11 +3,20 @@
     import { myUser, muted, socket, pvs, pvBox, whispTarget } from '$lib/store';
 
     //TYPE
+    const enum Role {
+        GUEST = 'guest',
+        USER = 'user',
+        MODERATOR = 'moderator',
+        ADMIN = 'administrator',
+        OWNER = 'owner',
+    }
+
     type User = {
         username: string,
-        role: string,
+        role: Role,
         avatar: string
     }
+
 
     //PROPS
     export let id:string;
@@ -19,6 +28,22 @@
     function toggleOpts():void {
         if($myUser.username === data.username) return;
         stateOpts = !stateOpts;
+    }
+
+    //SET ICONS ROLE
+    function roleIcon():string {
+        switch(data.role) {
+            case Role.GUEST:
+                return 'fa-solid fa-circle-question';
+            case Role.USER:
+                return 'fa-solid fa-user';
+            case Role.MODERATOR:
+                return 'fa-solid fa-shield';
+            case Role.ADMIN:
+                return 'fa-solid fa-wrench';
+            case Role.OWNER:
+                return 'fa-solid fa-crown';
+        }
     }
 
     //SILENCE
@@ -71,7 +96,16 @@
         }
         //CLOSE OPTS
         stateOpts = false;
-        console.log($whispTarget)
+    }
+
+    //BAN
+    function ban():void {
+        $socket.send(JSON.stringify({
+            type: 'BAN',
+            msg: { username: data.username, id }
+        }));
+        //CLOSE OPTS
+        stateOpts = false;
     }
 
 </script>
@@ -85,7 +119,7 @@
         <i class="fa-solid fa-circle-user"></i>
     {/if}
     <h4 class="montserrat-alternates-bold">{decodeURI(data.username)}</h4>
-    <i class="fa-solid fa-circle-question"></i>
+    <i class={roleIcon()}></i>
 </article>
 {#if stateOpts}
     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
@@ -112,6 +146,13 @@
             <p class="montserrat-alternates-bold">susurrar</p>
             <i class="fa-solid fa-ear-listen"></i>
         </li>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        {#if $myUser.role === Role.OWNER || $myUser.role === Role.ADMIN || $myUser.role === Role.MODERATOR}
+            <li on:click={ban}>
+                <p class="montserrat-alternates-bold">Banear</p>
+                <i class="fa-solid fa-ban"></i>
+            </li>
+        {/if}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <li on:click={toggleOpts}>
             <p class="montserrat-alternates-bold">cancelar</p>

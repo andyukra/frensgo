@@ -9,9 +9,17 @@ const enum Type {
     STICKER = 'sticker'
 }
 
+const enum Role {
+    GUEST = 'guest',
+    USER = 'user',
+    MODERATOR = 'moderator',
+    ADMIN = 'administrator',
+    OWNER = 'owner',
+}
+
 type user = {
     username: string;
-    role: string,
+    role: Role,
     room: string,
     id:number,
     avatar: string|undefined

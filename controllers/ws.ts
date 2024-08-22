@@ -1,7 +1,8 @@
-import { Role } from "../types/core";
 import type { User, Room } from "../types/core";
 //LIST OF USERNAMES
 let usernames:Map<string, string> = new Map<string, string>();
+//LIST BANNED
+let bloqueds: Map<string|undefined, number> = new Map();
 
 //ROOMS
 let rooms = new Map<string, Map<number, User>>([
@@ -107,7 +108,15 @@ function switcher(
             msg: { from: sock.data.id, username: sock.data.nick, avatar: sock.data.avatar, body: msg.body }
           }));
           break;
-
+        case 'BAN':
+          if(!msg) return;
+          const username = msg.username.toUpperCase();
+          if(!usernames.has(username)) return;
+          const ip = usernames.get(username);
+          bloqueds.set(ip, Date.now());
+          rooms.get(room!)?.get(msg.id)?.ws.send(JSON.stringify({
+            type: "BANNED"
+          }));
     }
 }
 
@@ -116,6 +125,8 @@ let lock:boolean = false;
 
 export const wsControllers = {
     open(ws:any, server:any) {
+      //FILTER BANNEDS
+      if(bloqueds.has(ws.remoteAddress)) return;
       // ANTISPAM 2
       if(lock) return;
       lock = true;
@@ -136,7 +147,7 @@ export const wsControllers = {
       }
       const user:User = {
         username: nick,
-        role: Role.GUEST,
+        role: ws.data.role,
         ws: ws,
         avatar: avatar
       };
@@ -170,6 +181,7 @@ export const wsControllers = {
       console.log(nick, "Se ha conectado a esta sala : ", room);
     },
     message(ws:any, server:any, message:string) {
+      if(bloqueds.has(ws.remoteAddress)) return;
       ws.data.as(ws);
       const { type, msg } = JSON.parse(message);
       switcher(type, ws, ws.data.room, server, msg);
@@ -204,7 +216,8 @@ export const wsControllers = {
       console.log("Se ha desconectado el usuario : ", nick);
     },
     //SEND ROOMS INFO TO FRONTEND
-    rooms(cors:ResponseInit) {
+    rooms(ip:string|undefined, cors:ResponseInit) {
+      if(bloqueds.has(ip)) return new Response(null, {...cors, status: 500});
       const resp:Array<Room> = [];
       rooms.forEach((v,k) => {
         const obj:Room = {

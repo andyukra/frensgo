@@ -29,7 +29,7 @@
 <div class="container">
     <div class="header">
         <h1 class="kenia-regular">frens go</h1>
-        <p class="montserrat-alternates-regular">un chat para todxs</p>
+        <p class="montserrat-alternates-regular">un chat para t<a href="/registred">o</a>dxs</p>
     </div>
     <form on:submit|preventDefault={enter}>
         <input class="montserrat-alternates-bold" type="text" placeholder="Escribe tu nick..." maxlength="25" minlength="3" required bind:value={username} pattern="^(\w|\s|ñ)+$">
@@ -71,6 +71,11 @@
             font-size: 32px
             @media(max-width: 500px)
                 font-size: 20px
+            a
+                text-decoration: none
+                color: inherit
+                cursor: auto
+
     form
         margin-top: 1rem
         width: 90%
