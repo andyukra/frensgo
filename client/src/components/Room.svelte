@@ -4,8 +4,8 @@
     export let connectedUsers: number;
     export let value:string;
 
-    const host = 'wss://frensgo.lat';
-    // const host = 'ws://localhost:3000';
+    // const host = 'wss://frensgo.lat';
+    const host = 'ws://localhost:3000';
 
     // @ts-ignore
     import { myUser, socket } from '$lib/store';

@@ -1,8 +1,8 @@
 import { myUser, socket } from '$lib/store.ts';
 import { redirect } from '@sveltejs/kit';
 
-const host = "https://frensgo.lat";
-// const host = "http://localhost:3000";
+// const host = "https://frensgo.lat";
+const host = "http://localhost:3000";
 
 export async function load() {
     let sock;
