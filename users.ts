@@ -8,4 +8,10 @@ export const users:Map<string, registred> = new Map([
             role: Role.OWNER 
         }
     ],
+    [
+        'MAREA', {
+            password: '7777',
+            role: Role.ADMIN 
+        }
+    ]
 ]);

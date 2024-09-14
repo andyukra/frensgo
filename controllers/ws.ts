@@ -114,7 +114,8 @@ function switcher(
           if(!usernames.has(username)) return;
           const ip = usernames.get(username);
           bloqueds.set(ip, Date.now());
-          rooms.get(room!)?.get(msg.id)?.ws.send(JSON.stringify({
+          const usr = rooms.get(room!)?.get(msg.id);
+          usr?.ws.send(JSON.stringify({
             type: "BANNED"
           }));
     }
